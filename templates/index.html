@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8">
+  <title>ADNews</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+<body>
+  <div class="topbar">
+    <img class="logo" src="{{ url_for('static', filename='img/logo.jpg') }}" alt="logo">
+    <div class="brand">ADNews</div>
+  </div>
+
+  <canvas id="bg-candles"></canvas>
+
+  <div class="main-wrapper">
+    <!-- SIDEBAR -->
+    <div class="sidebar" id="sidebar"></div>
+
+    <!-- ОСНОВНОЙ КОНТЕНТ -->
+    <div class="content" id="content"><b>Загрузка...</b></div>
+
+    <!-- О ПРОЕКТЕ (Удлинённый блок) -->
+    <div class="info-box" id="about">
+      <h3>О проекте</h3>
+      <p>ADNews — агрегатор новостей и рекомендаций по рынкам, объединяющий аналитику, краткие выводы и оригинальные источники.</p>
+    </div>
+
+    <!-- ИСТОЧНИКИ -->
+    <div class="info-box" id="sources">
+      <h4>Источники</h4>
+      <p>Мы отслеживаем официальные ленты: Bloomberg, Reuters, ФРС, ЕЦБ, SEC и др.</p>
+    </div>
+
+    <!-- КАК РАБОТАЕТ -->
+    <div class="info-box" id="how">
+      <h4>Как работает</h4>
+      <p>Данные загружаются из таблицы, новости отображаются с кратким содержанием, рекомендацией и ссылкой.</p>
+    </div>
+
+    <!-- КОНТАКТЫ -->
+    <div class="info-box" id="contacts">
+      <h4>Контакты</h4>
+      <p>📧 <a href="mailto:team@adnews.ai">team@adnews.ai</a><br>
+         📱 <a href="https://t.me/adnews_ai" target="_blank">@adnews_ai</a></p>
+    </div>
+  </div>
+
+  <footer>
+    📧 <a href="mailto:team@adnews.ai">team@adnews.ai</a> |
+    📱 <a href="https://t.me/adnews_ai" target="_blank">@adnews_ai</a>
+  </footer>
+
+  <script src="{{ url_for('static', filename='js/candles.js') }}"></script>
+  <script src="{{ url_for('static', filename='js/main.js') }}"></script>
+</body>
+</html>
