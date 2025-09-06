@@ -48,9 +48,8 @@ def clear_database_web():
     return True
 
 
-if __name__ == "__main__":
-    info = ("smth", "smth", "sec", 1000, "https", "lkn", "ghjk")
+info = ("smth", "smth", "sec", 1000, "https", "lkn", "ghjk")
 
-    print(single_insert_web(info = info))
-    print(multiple_extract_web())
-    print(clear_database_web())
+for i in range(5):
+   single_insert_web(info)
+    
