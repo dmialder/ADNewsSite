@@ -46,10 +46,3 @@ def clear_database_web():
 
     conn.close()
     return True
-
-
-info = ("smth", "smth", "sec", 1000, "https", "lkn", "ghjk")
-
-for i in range(5):
-   single_insert_web(info)
-    
