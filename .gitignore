@@ -1,0 +1,51 @@
+# Byte-compiled / optimized / DLL files
+__pycache__/
+*.py[cod]
+*.pyo
+*.so
+
+# Jupyter Notebook checkpoints
+.ipynb_checkpoints/
+
+# Virtual environments
+.env/
+.venv/
+env/
+venv/
+
+# IDEs
+.vscode/
+.idea/
+*.sublime-workspace
+*.sublime-project
+
+# Mac/Windows system files
+.DS_Store
+Thumbs.db
+
+# Logs
+*.log
+
+# Python packages
+*.egg-info/
+dist/
+build/
+
+# Configs
+*.env
+*.ini
+settings_local.py
+config_local.yaml
+
+# Node modules (если есть фронтенд)
+node_modules/
+
+# Output
+*.out
+*.bak
+
+# Pytest
+.cache/
+
+# VS Code settings
+*.code-workspace
