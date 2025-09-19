@@ -1,7 +1,7 @@
 import sqlite3
 
 def single_insert_web(info):
-    conn = sqlite3.connect('web_database.db')
+    conn = sqlite3.connect('../src/adnews/database/web_database.db')
     cursor = conn.cursor()
 
     # Insert a single record
@@ -13,7 +13,7 @@ def single_insert_web(info):
 
 
 def multiple_insert_web(info):
-    conn = sqlite3.connect('web_database.db')
+    conn = sqlite3.connect('../src/adnews/database/web_database.db')
     cursor = conn.cursor()
 
     # Insert multiple record

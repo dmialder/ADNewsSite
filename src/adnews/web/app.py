@@ -1,7 +1,7 @@
 from flask import Flask, render_template, jsonify
 import csv
 import sqlite3
-import web_db.essential_funcs as ef
+from ..database.essential_funcs import *
 from threading import Lock
 
 application = Flask(__name__)
@@ -25,7 +25,7 @@ def load_news():
 
 def load_news_db():
     news = []
-    load = ef.multiple_extract_web()
+    load = multiple_extract_web()
     single_dict_load = dict()
     for i in range(5):
         single_dict_load["title"] = load[i][1]
