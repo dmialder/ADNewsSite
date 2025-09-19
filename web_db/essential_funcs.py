@@ -5,7 +5,7 @@ def single_insert_web(info):
     cursor = conn.cursor()
 
     # Insert a single record
-    cursor.execute("INSERT INTO posts (init_text, short_text, analysis_text, num_views, url, dt, hashtag) VALUES (?, ?, ?, ?, ?, ?, ?)", info)
+    cursor.execute("INSERT INTO posts (title, datetime, init_text, summary, advice, source, source_url) VALUES (?, ?, ?, ?, ?, ?, ?)", info)
     conn.commit()
     conn.close()
 
@@ -17,7 +17,7 @@ def multiple_insert_web(info):
     cursor = conn.cursor()
 
     # Insert multiple record
-    cursor.executemany("INSERT INTO posts (init_text, short_text, analysis_text, num_views, url, dt, hashtag) VALUES (?, ?, ?, ?, ?, ?, ?)", info)
+    cursor.executemany("INSERT INTO posts (title, datetime, init_text, summary, advice, source, source_url) VALUES (?, ?, ?, ?, ?, ?, ?)", info)
     conn.commit()
     conn.close()
 

@@ -1,16 +1,16 @@
-1. initially launch db_creator.py to create database
+1. Сначала запустите db_creator.py для создания базы данных.
 
-2. database consists of 8 parameters:
-"id" (creates automatically, doesn't have to do anything with it); 
-"init_text", "short_text", "analysis_text", "url" - TEXT format;
-"num_views" - integer;
-"dt" - TEXT. It means datatime, but sqlite3 doesn't provide datetime format. In order to make it so, have to use posgreSQL;
-"hashtag" - TEXT. Can add multiple, but has to be in "smth1, smth2, smth3" format, so still the text format. Or have to use postgreSQL
+2. База данных состоит из 8 параметров:
+"id" (создаётся автоматически, с ней ничего не нужно делать);
+"init_text", "short_text", "analysis_text", "url" - текстовый формат;
+"num_views" - целое число;
+"dt" - текстовый формат. Это означает datatime, но в SQLite3 формат datetime не поддерживается. Для этого необходимо использовать posgreSQL;
+"hashtag" - текстовый формат. Можно добавить несколько параметров, но они должны быть в формате "smth1, smth2, smth3", то есть текстовый формат остаётся текстовым. Или придётся использовать PostgreSQL.
 
-3. in essential_funcs.py stored functions "single_insert_web", "multiple_insert_web", "multiple_extract_web", "clear_database_web"
+3. В essential_funcs.py хранятся функции "single_insert_web", "multiple_insert_web", "multiple_extract_web", "clear_database_web".
 
-4. To add single raw, have to pass (init_text, short_text, analysis_text, num_views, url, dt, hashtag) in "single_insert_web" function. Same with "multiple_insert_web", but passing parameter is list
+4. Чтобы добавить один элемент, необходимо передать (init_text, short_text, analysis_text, num_views, url, dt, hashtag) в функцию "single_insert_web". То же самое с "multiple_insert_web", но передаётся список параметров.
 
-5. To extract info from db, use "multiple_extract_web" function, passing no parameters. Will give you a list of rows
+5. Для извлечения информации из базы данных используйте функцию "multiple_extract_web" без параметров. В результате вы получите список строк.
 
-6. To clear database, use function "clear_database_web"
+6. Для очистки базы данных используйте функцию "clear_database_web".

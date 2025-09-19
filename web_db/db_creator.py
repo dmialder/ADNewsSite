@@ -7,12 +7,13 @@ cursor = conn.cursor()
 cursor.execute('''
     CREATE TABLE IF NOT EXISTS posts (
         id INTEGER PRIMARY KEY AUTOINCREMENT,
-        title TEXT,
+        title TEXT NOT NULL,
         datetime TEXT NOT NULL,
         init_text TEXT NOT NULL,
         summary TEXT NOT NULL,
         advice TEXT NOT NULL,
         num_views INTEGER,
+        source TEXT NOT NULL,
         source_url TEXT NOT NULL,
         hashtag TEXT
     )
