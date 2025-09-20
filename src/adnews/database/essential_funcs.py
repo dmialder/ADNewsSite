@@ -26,7 +26,7 @@ def multiple_insert_web(info):
 
 # extraction of all info from database for website
 def multiple_extract_web():
-    conn = sqlite3.connect('web_database.db')
+    conn = sqlite3.connect('../src/adnews/database/web_database.db')
     cursor = conn.cursor()
 
     # Select all data from the users table
@@ -38,7 +38,7 @@ def multiple_extract_web():
 
 
 def clear_database_web():
-    conn = sqlite3.connect('web_database.db')
+    conn = sqlite3.connect('../src/adnews/database/web_database.db')
     cursor = conn.cursor()
 
     cursor.execute('DELETE FROM posts;')
