@@ -25,7 +25,7 @@ def build_record(e: dict, full_text: str, src: dict) -> dict:
         record.get("summary" or ""), #summary TEXT,
         '', #advice TEXT,
         record["source"], #source TEXT NOT NULL,
-        record["link"], #source_url TEXT NOT NULL,
+        record["link"], #source_url TEXT NOT NULL,  
     )
 
     # Добавляем запись в базу

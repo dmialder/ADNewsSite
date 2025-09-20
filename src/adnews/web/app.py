@@ -1,7 +1,7 @@
 from flask import Flask, render_template, jsonify
 import csv
 import sqlite3
-from ..database.essential_funcs import *
+from src.adnews.database.essential_funcs import *
 from threading import Lock
 
 application = Flask(__name__)
@@ -27,13 +27,14 @@ def load_news_db():
     news = []
     load = multiple_extract_web()
     single_dict_load = dict()
-    for i in range(5):
+    for i in range(min(len(load), 5)):
         single_dict_load["title"] = load[i][1]
         single_dict_load["datetime"] = load[i][2]
         single_dict_load["summary"] = load[i][4]
         single_dict_load["advice"] = load[i][5]
         single_dict_load["source_url"] = load[i][7]
         news.append(single_dict_load)
+        single_dict_load = dict()
     return news
 
 
@@ -60,6 +61,9 @@ def select_news(index):
         return jsonify(news[index])
     else:
         return jsonify({"error": "Invalid index"}), 400
+
+def main():
+    application.run(debug=True)
 
 if __name__ == "__main__":
     application.run(debug=True)
