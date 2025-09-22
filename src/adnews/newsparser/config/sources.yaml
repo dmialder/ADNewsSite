@@ -1,5 +1,5 @@
 defaults:
-  period_sec: 300
+  period_sec: 600
   http_timeout_sec: 60
   throttle_sec: 3
   out_path: "out.txt"
@@ -18,6 +18,10 @@ sources:
     feed_url: "https://rssexport.rbc.ru/rbcnews/news/30/full.rss"
     fulltext: "rbc_news_full-text"
     selectors: ["[itemprop='articleBody']", "div.article__text", "div.article__content"]
+    category_include:
+      - "эконом"
+      - "финанс"
+      - "инвест"
   - name: tass
     feed_url: "https://tass.ru/rss/v2.xml"
     fulltext: "require_http"

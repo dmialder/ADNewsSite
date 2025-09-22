@@ -45,9 +45,6 @@ def parse_feed(feed_bytes: bytes, src: dict) -> list[dict]:
             if src.get("fulltext") != "require_http":
                 content_encoded = item.get(src.get("fulltext"))
 
-            print(src.get('name'))
-            print(item.get("published"))
-
             out.append({                           # собираем нормализованный словарь записи
                 "title": (item.get("title") or "").strip(),   # заголовок без крайних пробелов
                 "link": (item.get("link") or "").strip(),     # ссылка на оригинальную статью
