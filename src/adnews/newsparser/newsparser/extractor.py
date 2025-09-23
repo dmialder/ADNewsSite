@@ -15,7 +15,7 @@ def extract_fulltext(e: dict, src: dict) -> str:
     return text
 
 
-def _try_selectors(html: str, src: dict) -> str | None:
+def _try_selectors(html: str, src: dict):
     """Пытается извлечь текст по CSS-селекторам из конфига."""
     selectors = src.get("selectors") or []
     if not selectors:
