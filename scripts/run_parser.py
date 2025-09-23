@@ -3,15 +3,14 @@
 import sys
 from pathlib import Path
 
-script_dir = Path(__file__).parent
+# Получаем абсолютный путь к корню проекта
+script_dir = Path(__file__).resolve().parent
 project_root = script_dir.parent
 
-# Добавляем корень проекта в Python path
+# Добавляем корень проекта и src в Python path
 sys.path.insert(0, str(project_root))
+sys.path.insert(0, str(project_root / "src"))
 
-
-# Импортируем и запускаем парсер
 from src.adnews.newsparser.app import main
 
 main()
-

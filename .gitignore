@@ -50,3 +50,5 @@ node_modules/
 
 # VS Code settings
 *.code-workspace
+passenger_wsgi.py
+*.db

@@ -62,8 +62,5 @@ def select_news(index):
     else:
         return jsonify({"error": "Invalid index"}), 400
 
-def main():
-    application.run(debug=True)
-
 if __name__ == "__main__":
     application.run(debug=True)
