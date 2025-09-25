@@ -16,6 +16,8 @@ def build_record(e: dict, src: dict) -> dict:
         "published": published_iso,
     }
 
+    print(record)
+
     # Собираем кортеж данных для базы
     db_row = (
         #id INTEGER PRIMARY KEY AUTOINCREMENT,

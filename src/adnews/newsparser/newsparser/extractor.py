@@ -4,7 +4,6 @@ from .http_fetcher import fetch_html      # загрузка HTML по URL
 
 
 def extract_fulltext(link: str, src: dict) -> str:
-    print(link)
     """Возвращает кортеж (извлечённый текст, сырой HTML или None)."""
     html = fetch_html(link, src)  # HTTP GET статьи
     if not html:

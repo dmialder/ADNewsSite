@@ -31,7 +31,6 @@ def make_process_source(out_path: str):
             if last_dt is not None and pub <= last_dt:
                 continue
             rec = build_record(e, src)
-            print(rec)
             new_cnt += 1
             if saved_pub_max is None or pub > saved_pub_max:
                 saved_pub_max = pub

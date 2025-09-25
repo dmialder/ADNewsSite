@@ -44,7 +44,7 @@ def parse_feed(feed_bytes: bytes, src: dict) -> list[dict]:
                     break
         if bool(flag) ^ hasattr(item, "category"):  #проверка на соответствмие категории
             content_encoded = None                 # сюда поместим полный HTML-текст, если он отдан в ленте
-            if src.get("fulltext") != "require_http":
+            if item.get(src.get("fulltext")):
                 content_encoded = item.get(src.get("fulltext"))
             else:
                 content_encoded = extract_fulltext(item.get("link"), src)
