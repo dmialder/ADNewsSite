@@ -32,7 +32,7 @@ def load_news_db():
         single_dict_load["datetime"] = load[i][2]
         single_dict_load["summary"] = load[i][4]
         single_dict_load["advice"] = load[i][5]
-        single_dict_load["source_url"] = load[i][7]
+        single_dict_load["source_url"] = load[i][8]
         news.append(single_dict_load)
         single_dict_load = dict()
     return news
