@@ -4,7 +4,6 @@ from .newsparser.config import load_config
 from .newsparser.scheduler import run_forever
 from .newsparser.http_fetcher import fetch_feed_bytes
 from .newsparser.rss_parser import parse_feed
-from .newsparser.extractor import extract_fulltext
 from .newsparser.exporter import build_record
 from .newsparser.state import get_last_published, set_last_published
 
@@ -31,8 +30,7 @@ def make_process_source(out_path: str):
             pub = e["published"]
             if last_dt is not None and pub <= last_dt:
                 continue
-            full_text = extract_fulltext(e, src)
-            rec = build_record(e, full_text, src)
+            rec = build_record(e, src)
             print(rec)
             new_cnt += 1
             if saved_pub_max is None or pub > saved_pub_max:

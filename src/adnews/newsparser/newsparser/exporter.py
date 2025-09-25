@@ -1,7 +1,7 @@
 from datetime import datetime, timezone
 from src.adnews.database.essential_funcs import *
  
-def build_record(e: dict, full_text: str, src: dict) -> dict:
+def build_record(e: dict, src: dict) -> dict:
     """Формирует минимальную запись и добавляет в БД."""
     dt = e.get("published")  # datetime или None (UTC/с tz)
     published_iso = dt.isoformat() if dt else None
@@ -12,7 +12,7 @@ def build_record(e: dict, full_text: str, src: dict) -> dict:
         "link": (e.get("link") or "").strip(),
         "guid": e.get("guid"),
         "summary": (e.get("summary") or "").strip(),
-        "full_text": full_text or "",
+        "full_text": e.get("rss_full"),
         "published": published_iso,
     }
 

@@ -8,6 +8,8 @@ from email.utils import parsedate_to_datetime
 from datetime import datetime, timezone
 import calendar
 
+from .extractor import extract_fulltext
+
 def _parse_pubdate(e: dict):
     v = e.get("published")
     if v:
@@ -44,6 +46,8 @@ def parse_feed(feed_bytes: bytes, src: dict) -> list[dict]:
             content_encoded = None                 # сюда поместим полный HTML-текст, если он отдан в ленте
             if src.get("fulltext") != "require_http":
                 content_encoded = item.get(src.get("fulltext"))
+            else:
+                content_encoded = extract_fulltext(item.get("link"), src)
 
             out.append({                           # собираем нормализованный словарь записи
                 "title": (item.get("title") or "").strip(),   # заголовок без крайних пробелов
