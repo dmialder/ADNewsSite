@@ -1,4 +1,5 @@
 import requests
+from src.adnews.newsparser.log import *
 
 def fetch_feed_bytes(src: dict) -> bytes:
     """Простой GET RSS. Возвращает байты ленты."""
@@ -19,15 +20,22 @@ def fetch_html(url: str, src: dict) -> str:
     try:
         response = scraper.get(url, timeout=15)
         response.raise_for_status()
-        print(f"* HTTP request sent, awaiting response ... {response.status_code} {response.reason}")
+        # print(f"* HTTP request sent, awaiting response ... {response.status_code} {response.reason}")
+
+        # Логируем успешный запрос
+        log_article_parsing(src["name"], url, response.status_code, "Article fetched successfully")
         return response.text
+    
     except requests.exceptions.HTTPError as e:
+        log_article_parsing(src["name"], url, getattr(e.response, 'status_code', None) if hasattr(e, 'response') else None, f"Failed to fetch article: {str(e)}")
+        
         if response.status_code == 404:
-            print(f"404 Not Found: {url}")
+            # print(f"404 Not Found: {url}")
             return "404 Page doesn't exist!"
         else:
-            print(f"HTTP error ({response.status_code}) on {url}: {e}")
+            # print(f"HTTP error ({response.status_code}) on {url}: {e}")
             raise
+
     except Exception as e:
-        print(f"Error fetching {url}: {e}")
+        # print(f"Error fetching {url}: {e}")
         raise

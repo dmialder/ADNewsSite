@@ -52,3 +52,4 @@ node_modules/
 *.code-workspace
 passenger_wsgi.py
 *.db
+*.log
