@@ -37,6 +37,7 @@ build/
 *.ini
 settings_local.py
 config_local.yaml
+desktop.ini
 
 # Node modules (если есть фронтенд)
 node_modules/
