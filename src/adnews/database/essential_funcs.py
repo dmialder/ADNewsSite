@@ -1,7 +1,7 @@
 import sqlite3
 
 def single_insert_web(info):
-    conn = sqlite3.connect('web_database.db')
+    conn = sqlite3.connect('/var/www/u3198937/data/www/neuro-express.ru/src/adnews/database/web_database.db')
     cursor = conn.cursor()
 
     # Insert a single record
@@ -13,7 +13,7 @@ def single_insert_web(info):
 
 
 def multiple_insert_web(info):
-    conn = sqlite3.connect('web_database.db')
+    conn = sqlite3.connect('/var/www/u3198937/data/www/neuro-express.ru/src/adnews/database/web_database.db')
     cursor = conn.cursor()
 
     # Insert multiple record
@@ -26,7 +26,7 @@ def multiple_insert_web(info):
 
 # extraction of all info from database for website
 def multiple_extract_web():
-    conn = sqlite3.connect('web_database.db')
+    conn = sqlite3.connect('/var/www/u3198937/data/www/neuro-express.ru/src/adnews/database/web_database.db')
     cursor = conn.cursor()
 
     # Select all data from the users table
@@ -38,7 +38,7 @@ def multiple_extract_web():
 
 
 def clear_database_web():
-    conn = sqlite3.connect('web_database.db')
+    conn = sqlite3.connect('/var/www/u3198937/data/www/neuro-express.ru/src/adnews/database/web_database.db')
     cursor = conn.cursor()
 
     cursor.execute('DELETE FROM posts;')
