@@ -2,7 +2,6 @@ defaults:
   period_sec: 600
   http_timeout_sec: 60
   throttle_sec: 3
-  out_path: "out.txt"
   headers:
     User_Agent : "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/129.0.0.0 Safari/537.36"
   fulltext: "require_http"
