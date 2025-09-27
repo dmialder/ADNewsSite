@@ -2,11 +2,41 @@ from flask import Flask, render_template, jsonify
 import csv
 import sqlite3
 import web_db.essential_funcs as ef
-from threading import Lock
+from threading import Lock, Thread
+import os
+import time
 
 application = Flask(__name__)
 news_lock = Lock()
 rotation_index = [0]  # используем список для изменения внутри функции
+SP500_DATA_PATH = os.path.join("static", "js", "sp500_data.json")
+
+
+def fetch_sp500_loop():
+    while True:
+        try:
+            ticker = yf.Ticker("^GSPC")  # S&P 500 индекс
+            data = ticker.history(period="1d", interval="1m")
+            data = data.tail(90)
+
+            candles = []
+            for timestamp, row in data.iterrows():
+                candles.append({
+                    "time": str(timestamp),
+                    "open": round(row["Open"], 2),
+                    "close": round(row["Close"], 2),
+                    "high": round(row["High"], 2),
+                    "low": round(row["Low"], 2)
+                })
+
+            with open(SP500_DATA_PATH, "w") as f:
+                json.dump(candles, f)
+
+            print(f"[INFO] Обновлены данные S&P500: {len(candles)} свечей")
+        except Exception as e:
+            print(f"[ERROR] Ошибка при загрузке данных S&P500: {e}")
+
+        time.sleep(900)  # 15 минут
 
 def load_news():
     news = []
@@ -62,4 +92,5 @@ def select_news(index):
         return jsonify({"error": "Invalid index"}), 400
 
 if __name__ == "__main__":
+    Thread(target=fetch_sp500_loop, daemon=True).start()
     application.run(debug=True)
