@@ -1,5 +1,6 @@
 import requests
 from src.adnews.newsparser.log import *
+import time
 
 def fetch_feed_bytes(src: dict) -> bytes:
     """Простой GET RSS. Возвращает байты ленты."""
@@ -13,7 +14,7 @@ def fetch_feed_bytes(src: dict) -> bytes:
 
 import cloudscraper
 
-def fetch_html(url: str, src: dict) -> str:
+def fetch_html(url: str, src: dict, depth_of_recursion=0) -> str:
     scraper = cloudscraper.create_scraper(
         browser={'browser': 'chrome', 'platform': 'windows', 'mobile': False}
     )
@@ -32,6 +33,12 @@ def fetch_html(url: str, src: dict) -> str:
         if response.status_code == 404:
             # print(f"404 Not Found: {url}")
             return "404 Page doesn't exist!"
+        elif response.status_code == 403:
+            time.sleep(15)
+            depth_of_recursion += 1
+            if depth_of_recursion == 2:
+                return "403 Forbidden!"
+            return fetch_html(url, src, depth_of_recursion)
         else:
             # print(f"HTTP error ({response.status_code}) on {url}: {e}")
             raise
