@@ -2,6 +2,7 @@ from flask import Flask, render_template, jsonify
 import csv
 import sqlite3
 import web_db.essential_funcs as ef
+import yfinance as yf
 from threading import Lock, Thread
 import os
 import time
@@ -94,3 +95,4 @@ def select_news(index):
 if __name__ == "__main__":
     Thread(target=fetch_sp500_loop, daemon=True).start()
     application.run(debug=True)
+
