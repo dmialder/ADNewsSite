@@ -1,10 +1,12 @@
 from flask import Flask, render_template, jsonify
 import csv
 import sqlite3
-import web_db.essential_funcs as ef
+from src.adnews.database.essential_funcs import *
 from threading import Lock, Thread
 import os
 import time
+import json
+import yfinance as yf
 
 application = Flask(__name__)
 news_lock = Lock()
@@ -55,15 +57,16 @@ def load_news():
 
 def load_news_db():
     news = []
-    load = ef.multiple_extract_web()
+    load = multiple_extract_web()
     single_dict_load = dict()
-    for i in range(5):
+    for i in range(min(len(load), 5)):
         single_dict_load["title"] = load[i][1]
         single_dict_load["datetime"] = load[i][2]
         single_dict_load["summary"] = load[i][4]
         single_dict_load["advice"] = load[i][5]
-        single_dict_load["source_url"] = load[i][7]
+        single_dict_load["source_url"] = load[i][8]
         news.append(single_dict_load)
+        single_dict_load = dict()
     return news
 
 

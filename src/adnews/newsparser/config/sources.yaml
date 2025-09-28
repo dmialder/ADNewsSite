@@ -1,0 +1,31 @@
+defaults:
+  period_sec: 600
+  http_timeout_sec: 60
+  throttle_sec: 3
+  headers:
+    User_Agent : "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/129.0.0.0 Safari/537.36"
+  fulltext: "require_http"
+  force_all_if_no_category: true
+  category_include:
+    - "эконом"
+    - "финанс"
+    - "инвест"
+    - "полит"
+
+sources:
+  - name: rbc
+    feed_url: "https://rssexport.rbc.ru/rbcnews/news/30/full.rss"
+    fulltext: "rbc_news_full-text"
+    selectors: ["[itemprop='articleBody']", "div.article__text", "div.article__content"]
+  - name: tass
+    feed_url: "https://tass.ru/rss/v2.xml"
+    fulltext: "require_http"
+    selectors: ["article","div[data-qa='article-text']"]
+  - name: investing_ru
+    feed_url: "https://ru.investing.com/rss/news_12.rss"
+    fulltext: "require_http"
+    selectors: ["div.WYSIWYG"]
+  - name: vedomosti
+    feed_url: "https://www.vedomosti.ru/rss/news"
+    fulltext: "require_http"
+    selectors: ["article","div.article-content"]

@@ -1,0 +1,9 @@
+pyyaml
+bs4
+readability-lxml
+requests
+feedparser
+regex
+tkcalendar
+emailutils
+cloudscraper
