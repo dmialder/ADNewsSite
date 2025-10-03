@@ -53,6 +53,5 @@ node_modules/
 *.code-workspace
 
 sp500_data.json
-passenger_wsgi.py
 *.db
 *.log
