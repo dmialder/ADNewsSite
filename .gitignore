@@ -56,3 +56,8 @@ sp500_data.json
 passenger_wsgi.py
 *.db
 *.log
+<<<<<<< HEAD
+=======
+src/adnews/analysis/config/config.yaml
+src/adnews/analysis/config/config.yaml
+>>>>>>> 7dad271 (removed key)
