@@ -55,3 +55,8 @@ node_modules/
 sp500_data.json
 *.db
 *.log
+<<<<<<< HEAD
+=======
+src/adnews/analysis/config/config.yaml
+src/adnews/analysis/config/config.yaml
+>>>>>>> 7dad271 (removed key)
