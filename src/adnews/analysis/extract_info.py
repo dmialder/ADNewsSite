@@ -1,6 +1,6 @@
 import sqlite3
-from summarizer import *
-from advizer import *
+from src.adnews.analysis.analysis_maker import *
+from src.adnews.analysis.nothing.advizer import *
 from add_analysis_funcs import *
 
 
@@ -15,13 +15,14 @@ def refill_empty_summary_advice():
         id = row[0]
         init_text = row[3]
         summary = row[4]
+        advice = row[5]
         
         if summary is None:
-            summ_prompt_text = get_summarization_prompt(init_text)
-            summary = YGPT_analysis(init_text, summ_prompt_text)
-        
-        adv_prompt_text = get_advice_prompt(summary)
-        advice = YGPT_analysis(summary, adv_prompt_text)
+            summary_prompt_text = get_summarization_prompt(init_text)
+            summary = gpt_process(summary_prompt_text)
+        if advice is None:
+            adv_prompt_text = get_advice_prompt(summary)
+            advice = gpt_process(adv_prompt_text)
         
         cursor.execute("""UPDATE posts SET summary = ?, advice = ? WHERE id = ?""", (summary, advice, id))
 
