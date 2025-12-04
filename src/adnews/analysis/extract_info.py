@@ -1,6 +1,5 @@
 import sqlite3
-from src.adnews.analysis.analysis_maker import *
-from src.adnews.analysis.nothing.advizer import *
+from analysis_maker import *
 from add_analysis_funcs import *
 
 
