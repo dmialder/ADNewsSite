@@ -48,7 +48,7 @@ def parse_feed(feed_bytes: bytes, src: dict) -> list[dict]:
                 content_encoded = item.get(src.get("fulltext"))
             else:
                 content_encoded = extract_fulltext(item.get("link"), src)
-
+                   
             out.append({                           # собираем нормализованный словарь записи
                 "title": (item.get("title") or "").strip(),   # заголовок без крайних пробелов
                 "link": (item.get("link") or "").strip(),     # ссылка на оригинальную статью

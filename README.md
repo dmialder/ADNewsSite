@@ -11,3 +11,7 @@
 
 Документация:
 Используется: python 3.10(Flask)
+
+# ------------------------------
+1. Изменить путь к config.yaml в analysis_maker.py в функции gpt_process 1 раз
+Изменить путь к config.yaml в add_analysis_funcs.py вo всех функциях 3 раза
