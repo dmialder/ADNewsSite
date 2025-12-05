@@ -1,13 +1,16 @@
 import sqlite3
-from analysis_maker import *
-from add_analysis_funcs import *
+from .analysis_maker import *
+from .add_analysis_funcs import *
 
 
 def refill_empty_summary_advice():
     conn = sqlite3.connect('/var/www/u3198937/data/www/neuro-express.ru/src/adnews/database/web_database.db')
     cursor = conn.cursor()
 
-    cursor.execute("SELECT * FROM posts WHERE summary IS NOT NULL OR advice IS NOT NULL")
+    cursor.execute("""SELECT * 
+                        FROM posts 
+                        WHERE summary IS NULL OR summary = '' 
+                            OR advice IS NULL OR advice = '';""")
     rows = cursor.fetchall()
 
     for row in rows:
@@ -16,10 +19,10 @@ def refill_empty_summary_advice():
         summary = row[4]
         advice = row[5]
         
-        if summary is None:
+        if summary is None or summary == '':
             summary_prompt_text = get_summarization_prompt(init_text)
             summary = gpt_process(summary_prompt_text)
-        if advice is None:
+        if advice is None or advice == '':
             adv_prompt_text = get_advice_prompt(summary)
             advice = gpt_process(adv_prompt_text)
         

@@ -20,7 +20,7 @@ def read_config(file_path):
 # returns prompt for summarizator to make news short
 def get_summarization_prompt(news_text):
     
-    conf = read_config("C:\\startups\\ADNews\\code\\ADNewsSite\\src\\adnews\\analysis\\config\\config.yaml")
+    conf = read_config("/var/www/u3198937/data/www/neuro-express.ru/src/adnews/analysis/config/config.yaml")
     prompt = conf["Prompts"]["summarize"] + news_text
 
     return prompt
@@ -29,7 +29,7 @@ def get_summarization_prompt(news_text):
 # returns prompt of spheres, that news was related
 def get_sphere_prompt(summ):
     
-    conf = read_config("C:\\startups\\ADNews\\code\\ADNewsSite\\src\\adnews\\analysis\\config\\config.yaml")
+    conf = read_config("/var/www/u3198937/data/www/neuro-express.ru/src/adnews/analysis/config/config.yaml")
     prompt = conf["Prompts"]["spheres_1"] + summ + conf["Prompts"]["spheres_2"] + conf["Spheres"]
 
     return prompt
@@ -38,7 +38,7 @@ def get_sphere_prompt(summ):
 # returns prompt for advice of each related sphere
 def get_advice_prompt(summ):
 
-    conf = read_config("C:\\startups\\ADNews\\code\\ADNewsSite\\src\\adnews\\analysis\\config\\config.yaml")
+    conf = read_config("/var/www/u3198937/data/www/neuro-express.ru/src/adnews/analysis/config/config.yaml")
     prompt = conf["Prompts"]["analysis"] + summ
 
     return prompt

@@ -1,46 +1,52 @@
-from flask import Flask, render_template, jsonify
+from flask import Flask, render_template, jsonify, send_from_directory
 import csv
 import sqlite3
-from src.adnews.database.essential_funcs import *
-from threading import Lock, Thread
-import os
-import time
 import json
-import yfinance as yf
+import os
+import logging
+from threading import Lock
+from src.adnews.database.essential_funcs import multiple_extract_web
 
-application = Flask(__name__)
+BASE_DIR = os.path.abspath(os.path.dirname(__file__))
+TEMPLATES_DIR = os.path.join(BASE_DIR, "templates")
+STATIC_DIR = os.path.join(BASE_DIR, "static")
+SP500_DATA_PATH = os.path.join(STATIC_DIR, "js", "sp500_data.json")
+LOG_PATH = os.path.join(BASE_DIR, "app.log")
+
+logging.basicConfig(
+    filename=LOG_PATH,
+    level=logging.INFO,
+    format="%(asctime)s [%(levelname)s] %(message)s",
+)
+
+application = Flask(__name__, template_folder=TEMPLATES_DIR, static_folder=STATIC_DIR)
 news_lock = Lock()
-rotation_index = [0]  # используем список для изменения внутри функции
-SP500_DATA_PATH = os.path.join("static", "js", "sp500_data.json")
+rotation_index = [0]
 
+def fetch_sp500_once():
+    """Однократная загрузка данных S&P500 из локального JSON."""
+    try:
+        if not os.path.exists(SP500_DATA_PATH):
+            logging.warning(f"Файл {SP500_DATA_PATH} не найден.")
+            return []
 
-def fetch_sp500_loop():
-    while True:
-        try:
-            ticker = yf.Ticker("^GSPC")  # S&P 500 индекс
-            data = ticker.history(period="1d", interval="1m")
-            data = data.tail(90)
+        with open(SP500_DATA_PATH, "r", encoding="utf-8") as f:
+            candles = json.load(f)
 
-            candles = []
-            for timestamp, row in data.iterrows():
-                candles.append({
-                    "time": str(timestamp),
-                    "open": round(row["Open"], 2),
-                    "close": round(row["Close"], 2),
-                    "high": round(row["High"], 2),
-                    "low": round(row["Low"], 2)
-                })
+        if not isinstance(candles, list) or not candles:
+            logging.warning("Пустые или некорректные данные в sp500_data.json.")
+            return []
 
-            with open(SP500_DATA_PATH, "w") as f:
-                json.dump(candles, f)
+        logging.info(f"Загружено {len(candles)} свечей из локального JSON.")
+        return candles
+    except Exception as e:
+        logging.exception(f"Ошибка при загрузке sp500_data.json: {e}")
+        return []
 
-            print(f"[INFO] Обновлены данные S&P500: {len(candles)} свечей")
-        except Exception as e:
-            print(f"[ERROR] Ошибка при загрузке данных S&P500: {e}")
+CANDLES_CACHE = fetch_sp500_once()
 
-        time.sleep(900)  # 15 минут
-
-def load_news():
+def load_news_csv():
+    """Резервная загрузка новостей из CSV."""
     news = []
     try:
         with open("news.csv", newline='', encoding='utf-8') as csvfile:
@@ -49,51 +55,87 @@ def load_news():
                 if i >= 5:
                     break
                 news.append(row)
-        print(news)
+        logging.info(f"Загружено {len(news)} новостей из CSV.")
     except Exception as e:
-        print(f"Ошибка при чтении news.csv: {e}")
+        logging.exception(f"Ошибка при чтении news.csv: {e}")
     return news
 
 
 def load_news_db():
+    """Основная загрузка новостей из БД."""
     news = []
-    load = multiple_extract_web()
-    single_dict_load = dict()
-    for i in range(min(len(load), 5)):
-        single_dict_load["title"] = load[i][1]
-        single_dict_load["datetime"] = load[i][2]
-        single_dict_load["summary"] = load[i][4]
-        single_dict_load["advice"] = load[i][5]
-        single_dict_load["source_url"] = load[i][8]
-        news.append(single_dict_load)
-        single_dict_load = dict()
+    try:
+        load = multiple_extract_web() or []
+    except Exception as e:
+        logging.exception(f"multiple_extract_web failed: {e}")
+        return news
+
+    for item in load[:5]:
+        try:
+            news.append({
+                "title": str(item[1]) if len(item) > 1 else "",
+                "datetime": str(item[2]) if len(item) > 2 else "",
+                "summary": str(item[4]) if len(item) > 4 else "",
+                "advice": str(item[5]) if len(item) > 5 else "",
+                "source_url": str(item[8]) if len(item) > 8 else "",
+            })
+        except Exception as e:
+            logging.warning(f"Пропущена некорректная запись: {e}")
+            continue
     return news
 
 
 @application.route("/")
 def index():
-    return render_template("index.html")
+    try:
+        return render_template("index.html")
+    except Exception as e:
+        logging.exception(f"Ошибка при рендеринге index.html: {e}")
+        return "<h1>Index render error</h1>", 200
+
 
 @application.route("/news")
 def get_news():
     with news_lock:
         news = load_news_db()
-        print(type(news))
-        print(type(news[0]))
         if not news:
-            return jsonify({"error": "No news available"}), 500
+            news = load_news_csv()
+
+        if not news:
+            logging.warning("Нет доступных новостей.")
+            return jsonify({"news": [], "selected": None}), 200
+
         selected = news[rotation_index[0] % len(news)]
         rotation_index[0] = (rotation_index[0] + 1) % len(news)
+
     return jsonify({"news": news, "selected": selected})
+
 
 @application.route("/select/<int:index>")
 def select_news(index):
-    news = load_news_db()
+    news = load_news_db() or load_news_csv()
     if 0 <= index < len(news):
         return jsonify(news[index])
     else:
         return jsonify({"error": "Invalid index"}), 400
 
+
+@application.route("/candles")
+def get_candles():
+    """Отдаёт кэшированные данные S&P500."""
+    if not CANDLES_CACHE:
+        return jsonify({"error": "No candle data available"}), 200
+    return jsonify(CANDLES_CACHE)
+
+
+@application.route("/favicon.ico")
+def favicon():
+    ico_dir = application.static_folder
+    ico_path = os.path.join(ico_dir, "favicon.ico")
+    if os.path.exists(ico_path):
+        return send_from_directory(ico_dir, "favicon.ico", mimetype="image/vnd.microsoft.icon")
+    return ("", 204)
+
 if __name__ == "__main__":
-    Thread(target=fetch_sp500_loop, daemon=True).start()
+    logging.info("Запуск Flask приложения")
     application.run(debug=True)

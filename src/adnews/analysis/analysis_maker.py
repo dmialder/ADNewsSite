@@ -3,12 +3,12 @@ import requests
 import json
 
 from yandex_gpt import YandexGPT
-from add_analysis_funcs import *
+from .add_analysis_funcs import *
 
 
 # this function sends prompt text to YandexGPT 5.1 and outputs gpt result
 def gpt_process(short_text):
-    conf = read_config("C:\\startups\\ADNews\\code\\ADNewsSite\\src\\adnews\\analysis\\config\\config.yaml")   
+    conf = read_config("/var/www/u3198937/data/www/neuro-express.ru/src/adnews/analysis/config/config.yaml")   
 
     prompt = {
         "modelUri": f"gpt://{conf['sourses_for_llm']['identity']}/{conf['sourses_for_llm']['model']}",
@@ -39,7 +39,7 @@ def gpt_process(short_text):
 
 
 if __name__ == "__main__":
-    conf = read_config("C:\\startups\\ADNews\\code\\ADNewsSite\\src\\adnews\\analysis\\config\\config.yaml")
+    conf = read_config("/var/www/u3198937/data/www/neuro-express.ru/src/adnews/analysis/config/config.yaml")
     news_text = """Совет директоров Банка России 24 октября 2025 года принял решение снизить ключевую ставку на 50 б.п., до 16,50% годовых. Устойчивые показатели текущего роста цен значимо не изменились и остаются выше 4% в пересчете на год. Экономика продолжает возвращаться к траектории сбалансированного роста. В последние месяцы активизировался рост кредитования. Высокими остаются инфляционные ожидания.
 
 Банк России будет поддерживать такую жесткость денежно-кредитных условий, которая необходима для возвращения инфляции к цели. В базовом сценарии это в том числе предполагает среднюю ключевую ставку в диапазоне 13,0–15,0% годовых в 2026 году и означает продолжительный период проведения жесткой денежно-кредитной политики. Дальнейшие решения по ключевой ставке будут приниматься в зависимости от устойчивости замедления инфляции и динамики инфляционных ожиданий. По прогнозу Банка России, с учетом проводимой денежно-кредитной политики годовая инфляция снизится до 4,0–5,0% в 2026 году. Повышение прогноза на 2026 год связано с действием разовых проинфляционных факторов. Устойчивая инфляция достигнет 4% во втором полугодии 2026 года. В 2027 году и далее годовая инфляция будет находиться на цели.
